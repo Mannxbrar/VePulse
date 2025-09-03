@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>VePulse — Newsroom</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>body{font-family: Arial;padding:12px} .card{border:1px solid #ddd;padding:10px;margin:8px 0;border-radius:6px}</style>
+</head>
+<body>
+  <h1>VePulse — Newsroom</h1>
+  <div>
+    <input id="title" placeholder="Headline" style="width:100%;padding:8px;margin:6px 0" />
+    <textarea id="body" placeholder="Body" style="width:100%;height:80px;padding:8px"></textarea>
+    <button id="post">Dispatch / Ingest</button>
+    <p id="msg"></p>
+  </div>
+  <hr/>
+  <div id="feed"></div>
+
+<script>
+const NEWSROOM_URL = window.NEXT_PUBLIC_API_URL || 'REPLACE_NEWSROOM_URL';
+const INGEST_URL = 'REPLACE_INGEST_URL';
+const API_KEY = 'REPLACE_API_KEY';
+
+async function fetchNews(){
+  const res = await fetch(NEWSROOM_URL);
+  const json = await res.json();
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  (json.articles||[]).forEach(a=>{
+    const d = document.createElement('div'); d.className='card';
+    d.innerHTML = '<strong>'+ (a.headline||a.title) +'</strong><p>'+ (a.summary||'') +'</p><small>'+a.source+'</small>';
+    feed.appendChild(d);
+  });
+}
+
+document.getElementById('post').onclick = async ()=>{
+  const title = document.getElementById('title').value;
+  const body = document.getElementById('body').value;
+  document.getElementById('msg').innerText = 'Sending...';
+  const res = await fetch(INGEST_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':API_KEY},
+    body: JSON.stringify({ title, body, source:'Web' })
+  });
+  document.getElementById('msg').innerText = 'Response: ' + res.status;
+  setTimeout(fetchNews,1200);
+};
+
+fetchNews();
+</script>
+</body>
+</html>
