@@ -1,3 +1,4 @@
+// Triggering the action
 // Express API packaged for Lambda using @vendia/serverless-express
 const express = require('express');
 const serverless = require('@vendia/serverless-express');
