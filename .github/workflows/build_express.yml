@@ -1,0 +1,32 @@
+name: Build Express API
+on:
+  push:
+    paths:
+      - 'serverless/express-api/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install deps and package
+        working-directory: serverless/express-api
+        run: |
+          npm ci
+          mkdir -p build
+          cp index.js build/
+          cd build
+          npm --no-warnings install --no-audit --no-fund --foreground-scripts ../package.json
+          zip -r express-api.zip index.js node_modules package.json >/dev/null
+          mv express-api.zip ..
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: express-api
+          path: serverless/express-api/express-api.zip
