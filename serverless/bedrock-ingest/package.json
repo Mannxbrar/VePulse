@@ -1,0 +1,14 @@
+{
+  "name": "vepulse-bedrock-ingest",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "echo noop"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.0.0"
+  }
+}
