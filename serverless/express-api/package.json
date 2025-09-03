@@ -1,0 +1,14 @@
+{
+  "name": "vepulse-express-api",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@vendia/serverless-express": "^4.0.0",
+    "aws-sdk": "^2.1360.0"
+  }
+}
