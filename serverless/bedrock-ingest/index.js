@@ -1,3 +1,4 @@
+// Triggering the action
 // Minimal ingest Lambda (Node 18 CommonJS).
 // IMPORTANT: Set Lambda env vars: AWS_REGION, S3_BUCKET_NAME, DDB_TABLE_NAME, BEDROCK_MODEL_ID, API_AUTH_KEY
 const crypto = require('crypto');
