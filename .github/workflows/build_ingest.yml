@@ -1,8 +1,8 @@
 name: Build Ingest Lambda
 on:
   push:
-    paths:
-      - 'serverless/bedrock-ingest/**'
+    branches: [ "main" ]
+  workflow_dispatch: {}
 jobs:
   build:
     runs-on: ubuntu-latest
