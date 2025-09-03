@@ -1,0 +1,34 @@
+name: Build Ingest Lambda
+on:
+  push:
+    paths:
+      - 'serverless/bedrock-ingest/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install deps and package
+        working-directory: serverless/bedrock-ingest
+        run: |
+          npm ci
+          mkdir -p build
+          cp index.js build/
+          cd build
+          # copy production deps into build/node_modules
+          npm --no-warnings install --no-audit --no-fund --foreground-scripts ../package.json
+          zip -r vepulse-ingest.zip index.js node_modules package.json >/dev/null
+          mv vepulse-ingest.zip ..
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vepulse-ingest-zip
+          path: serverless/bedrock-ingest/vepulse-ingest.zip
